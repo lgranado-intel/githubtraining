@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     name: Build Job
-  runs-on: ubuntu-latest
-  steps: 
-    - name: Print Statement
-      run: echo "Hello, All, I am Github Runner"
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Print Statement
+        run: echo "Hello, All, I am Github Runner"
