@@ -3,7 +3,7 @@ name: Simple Web Application Deployment
 on:
   push:
     branches:
-	  - master
+	    - master
 	  
 jobs:
   build:
