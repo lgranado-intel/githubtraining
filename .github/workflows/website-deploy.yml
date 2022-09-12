@@ -17,4 +17,34 @@ jobs:
         pwd
         echo "Print the List of Files"
         ls -la
+    - name: Define Variables
+      run: echo $POSTGRES_PASSWORD
+      env:
+        POSTGRESS_USER: postgres
+        POSTGRESS_PASSWORD: postgres
+    - name: Creating a File
+      run: |
+        echo "This is a test file" > test.txt
+        cat test.txt
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-artifact
+        path: test.txt
+      
+deploy:
+  name: Deploy Job
+  runs-on: ubuntu-latest
+  needs: build
+  steps:
+
+    - name: Download Artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: test-artifact
+        path: test.txt
+
+    - name: Verify the test.txt file
+      run: cat test.txt
 
