@@ -17,6 +17,4 @@ jobs:
         pwd
         echo "Print the List of Files"
         ls -la
-        echo "Print the Files in the Folder"
-        ls -la githubtraining
 
