@@ -11,9 +11,9 @@ jobs:
     steps: 
     - name: Checkout the Code
       run: |
-			  echo "Current Working Directory: $PWD"
-				pwd
-				echo "Print the List of Files"
-				ls -la
-				echo "Print the Files in the Folder"
-				ls -la asdfasdfasdf
+        echo "Current Working Directory: $PWD"
+        pwd
+        echo "Print the List of Files"
+        ls -la
+        echo "Print the Files in the Folder"
+        ls -la asdfasdfasdf
