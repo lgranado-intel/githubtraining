@@ -19,5 +19,5 @@ jobs:
       run: | 
         echo "$AZURE_KEY" > devapacheserver_key.pem
         chmod 600 devapacheserver_key.pem
-        scp -i devapacheserver_key.pem *.html $AZURE_USER@$AZURE_VM:/home/$AZURE_USER/
+        scp -i devapacheserver_key.pem -o StrictHostKeyChecking-no *.html $AZURE_USER@$AZURE_VM:/home/$AZURE_USER/
          
