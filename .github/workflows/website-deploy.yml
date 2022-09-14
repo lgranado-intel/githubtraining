@@ -8,16 +8,16 @@ jobs:
   deploy:
     name: Deploy to Apache Web Server on Azure
     runs-on: ubuntu-latest
+    env:
+      AZURE_USER: ${{ secrets.AZURE_USER }}
+      AZURE_KEY: ${{ secrets.AZURE_KEY }}
+      AZURE_VM: ${{ secrets.AZURE_VM}}
     steps: 
     - name: Checkout the Code
       uses: actions/checkout@v2.4.2
     - name: Copy the files
-      env:
-        AZURE_USER: ${{ secrets.AZURE_USER }}
-        AZURE_KEY: ${{ secrets.AZURE_KEY }}
-        AZURE_VM: ${{ secrets.AZURE_VM}}
       run: | 
-        echo "${{ secrets.AZURE_KEY }}" > ~/.ssh/devapacheserver_key.pem
-        cat devapacheserver_key.pem
-        scp -i ~/.ssh/devapacheserver_key.pem *.html $AZURE_USER@$AZURE_VM:/home/$AZURE_USER/
+        echo "$AZURE_KEY" > devapacheserver_key.pem
+        chmod 600 devapacheserver_key.pem
+        scp -i devapacheserver_key.pem *.html $AZURE_USER@$AZURE_VM:/home/$AZURE_USER/
          
