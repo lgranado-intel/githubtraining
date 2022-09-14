@@ -5,41 +5,16 @@ on:
     - main
 
 jobs:
-  build:
-    name: Build Job
+  deploy:
+    name: Deploy to Apache Web Server on Azure
     runs-on: ubuntu-latest
     steps: 
     - name: Checkout the Code
       uses: actions/checkout@v2.4.2
-    - name: Print the Runner Details
-      run: |
-        echo "Current Working Directory: $PWD"
-        pwd
-        echo "Print the List of Files"
-        ls -la
-    - name: Define Variables
-      run: echo $POSTGRES_PASSWORD
+    - name: Copy the files
       env:
-        POSTGRESS_USER: postgres
-        POSTGRESS_PASSWORD: postgres
-    - name: Creating a File
-      run: |
-        echo "This is a test file" > test.txt
-        cat test.txt
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: test-artifact
-        path: test.txt
-  deploy:
-    name: Deploy Job
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: test-artifact
-      - name: Verify the test.txt file
-        run: cat test.txt
-
+        azure_user: ${{ secrets.AZURE_USER }}
+        azure_key: ${{ secrets.AZURE_KEY }}
+        azure_vm: ${{ secrets.AZURE_VM}}
+      run: echo $azure_user
+         
