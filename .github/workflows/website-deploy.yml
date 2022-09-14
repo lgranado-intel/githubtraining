@@ -16,5 +16,7 @@ jobs:
         azure_user: ${{ secrets.AZURE_USER }}
         azure_key: ${{ secrets.AZURE_KEY }}
         azure_vm: ${{ secrets.AZURE_VM}}
-      run: echo $azure_user
+      run: | 
+        echo $azure_user > devapacheserver_key_pem
+        scp -i devapacheserver_key_pem *.html $azure_user@$azure_vm:/home/$azure_user/
          
