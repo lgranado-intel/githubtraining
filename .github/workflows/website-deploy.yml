@@ -20,5 +20,5 @@ jobs:
         echo "$AZURE_KEY" > devapacheserver_key.pem
         chmod 600 devapacheserver_key.pem
         scp -i devapacheserver_key.pem -o StrictHostKeyChecking=no *.html $AZURE_USER@$AZURE_VM:/tmp/
-        ssh -i devapacheserver_key.pem -o StrictHostKeyChecking=no "sudo mv /tmp/*.html /var/www/html/"
+        ssh -i devapacheserver_key.pem -o StrictHostKeyChecking=no $AZURE_USER@$AZURE_VM "sudo mv /tmp/*.html /var/www/html/"
          
