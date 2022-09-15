@@ -17,17 +17,34 @@ jobs:
     steps: 
     - name: Checkout the Code
       uses: actions/checkout@v2.4.2
-
+  
     - name: Zip the files
       run: |
         echo "Zip the files"
         tar -cvzf $ZIP_FILE src
-
-    - name: Copy the files
-      run: | 
+    
+    - name: Copy files
+      uses: appleboy/scp-action@master
+      with: 
+        host: $AZURE_VM
+        username: $AZURE_USER
+        key: $AZURE_KEY
+        source: "$ZIP_FILE,$SCRIPT_FILE"
+        target: "/tmp/"
+    
+    - name: Update website
+      run: |
         echo "$AZURE_KEY" > devapacheserver_key.pem
         chmod 600 devapacheserver_key.pem
-        scp -i devapacheserver_key.pem -o StrictHostKeyChecking=no $ZIP_FILE $AZURE_USER@$AZURE_VM:/tmp/
-        scp -i devapacheserver_key.pem -o StrictHostKeyChecking=no $SCRIPT_FILE $AZURE_USER@$AZURE_VM:/tmp/
         ssh -i devapacheserver_key.pem -o StrictHostKeyChecking=no $AZURE_USER@$AZURE_VM "bash /tmp/$SCRIPT_FILE"
+
+
+
+#    - name: Copy the files
+#      run: | 
+#        echo "$AZURE_KEY" > devapacheserver_key.pem
+#        chmod 600 devapacheserver_key.pem
+#        scp -i devapacheserver_key.pem -o StrictHostKeyChecking=no $ZIP_FILE $AZURE_USER@$AZURE_VM:/tmp/
+#        scp -i devapacheserver_key.pem -o StrictHostKeyChecking=no $SCRIPT_FILE $AZURE_USER@$AZURE_VM:/tmp/
+#        ssh -i devapacheserver_key.pem -o StrictHostKeyChecking=no $AZURE_USER@$AZURE_VM "bash /tmp/$SCRIPT_FILE"
          
