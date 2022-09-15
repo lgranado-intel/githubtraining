@@ -22,9 +22,10 @@ jobs:
       uses: marcodallasanta/ssh-scp-deploy@v1.2.0
       with: 
         local: 'src/*'
-        remote: '/var/www/html/'
+        remote: '/tmp/src/'
         host: ${{secrets.AZURE_VM}}
         user: ${{secrets.AZURE_USER}}
         key: ${{secrets.AZURE_KEY}}
         ssh_options: -o StrictHostKeyChecking=no
         pre_upload: sudo rm -rf /var/www/html/*
+        post_upload: sudo mv /tmp/src/* /var/www/html/
