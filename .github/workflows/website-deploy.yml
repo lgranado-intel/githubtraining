@@ -24,7 +24,7 @@ jobs:
         tar -cvzf $ZIP_FILE src
     
     - name: Copy files
-      uses: siva1024/scp-deployer@latest
+      uses: appleboy/scp-action@master
       with: 
         host: $AZURE_VM
         username: $AZURE_USER
