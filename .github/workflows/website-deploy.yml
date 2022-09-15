@@ -5,15 +5,9 @@ on:
     - main
 
 jobs:
-  deploy:
-    name: Deploy to Apache Web Server on Azure
+  devdeploy:
+    name: Deploy to DEV Apache Web Server on Azure
     runs-on: ubuntu-latest
-    env:
-      AZURE_USER: ${{ secrets.AZURE_USER }}
-      AZURE_KEY: ${{ secrets.AZURE_KEY }}
-      AZURE_VM: ${{ secrets.AZURE_VM}}
-      ZIP_FILE: "githubtrainingwebsite.tar.gz"
-      SCRIPT_FILE: "movefiles.sh"
     steps: 
     - name: Checkout the Code
       uses: actions/checkout@v2.4.2
@@ -23,7 +17,43 @@ jobs:
       with: 
         local: 'src/*'
         remote: '/tmp/src/'
-        host: ${{secrets.AZURE_VM}}
+        host: ${{secrets.AZURE_DEV_VM}}
+        user: ${{secrets.AZURE_USER}}
+        key: ${{secrets.AZURE_KEY}}
+        ssh_options: -o StrictHostKeyChecking=no
+        pre_upload: sudo rm -rf /var/www/html/*
+        post_upload: sudo mv /tmp/src/* /var/www/html/
+    
+  test-web:
+    name: Testing Deployment
+    runs-on: ubuntu-latest
+    needs: [devdeploy]
+    steps:
+    - name: trying to download index.html
+      run: wget -q0- ${{ secrets.AZURE_DEV_VM }}/index.html | grep -iq "LeoGitHubTraining"
+  
+  testing-network:
+    name: Testing Connectivity to Web Server
+    runs-on: ubuntu-latest
+    needs: [devdeploy]
+    steps:
+      - name: Using NetCat we will Check the Port
+        run: nc -zv ${{secrets.AZURE_DEV_VM }} 80
+
+  proddeploy:
+    name: Deploy to PROD Apache Web Server on Azure
+    runs-on: ubuntu-latest
+    needs: [test-web]
+    steps: 
+    - name: Checkout the Code
+      uses: actions/checkout@v2.4.2
+    
+    - name: Deploy Web Site
+      uses: marcodallasanta/ssh-scp-deploy@v1.2.0
+      with: 
+        local: 'src/*'
+        remote: '/tmp/src/'
+        host: ${{secrets.AZURE_PROD_VM}}
         user: ${{secrets.AZURE_USER}}
         key: ${{secrets.AZURE_KEY}}
         ssh_options: -o StrictHostKeyChecking=no
