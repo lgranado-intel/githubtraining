@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "unzip the folder"
 
 cd /tmp
