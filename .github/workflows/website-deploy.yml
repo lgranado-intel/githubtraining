@@ -29,5 +29,5 @@ jobs:
         chmod 600 devapacheserver_key.pem
         scp -i devapacheserver_key.pem -o StrictHostKeyChecking=no $ZIP_FILE $AZURE_USER@$AZURE_VM:/tmp/
         scp -i devapacheserver_key.pem -o StrictHostKeyChecking=no $SCRIPT_FILE $AZURE_USER@$AZURE_VM:/tmp/
-        ssh -i devapacheserver_key.pem -o StrictHostKeyChecking=no $AZURE_USER@$AZURE_VM $SCRIPT_FILE
+        ssh -i devapacheserver_key.pem -o StrictHostKeyChecking=no $AZURE_USER@$AZURE_VM "bash $SCRIPT_FILE"
          
