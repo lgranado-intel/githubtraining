@@ -30,7 +30,7 @@ jobs:
     needs: [devdeploy]
     steps:
     - name: trying to download index.html
-      run: wget -q0- ${{ secrets.AZURE_DEV_VM }}/index.html | grep -iq "LeoGitHubTraining"
+      run: wget -qO- ${{ secrets.AZURE_DEV_VM }}/index.html | grep -iq "LeoGitHubTraining"
   
   testing-network:
     name: Testing Connectivity to Web Server
