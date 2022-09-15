@@ -13,6 +13,7 @@ jobs:
       AZURE_KEY: ${{ secrets.AZURE_KEY }}
       AZURE_VM: ${{ secrets.AZURE_VM}}
       ZIP_FILE: "githubtrainingwebsite.tar.gz"
+      SCRIPT_FILE: "movefiles.sh"
     steps: 
     - name: Checkout the Code
       uses: actions/checkout@v2.4.2
@@ -27,5 +28,6 @@ jobs:
         echo "$AZURE_KEY" > devapacheserver_key.pem
         chmod 600 devapacheserver_key.pem
         scp -i devapacheserver_key.pem -o StrictHostKeyChecking=no $ZIP_FILE $AZURE_USER@$AZURE_VM:/tmp/
-        ssh -i devapacheserver_key.pem -o StrictHostKeyChecking=no $AZURE_USER@$AZURE_VM "movefiles.sh"
+        scp -i devapacheserver_key.pem -o StrictHostKeyChecking=no $SCRIPT_FILE $AZURE_USER@$AZURE_VM:/tmp/
+        ssh -i devapacheserver_key.pem -o StrictHostKeyChecking=no $AZURE_USER@$AZURE_VM $SCRIPT_FILE
          
