@@ -15,7 +15,7 @@ jobs:
     - name: Set version
       run: |
         sed -i "s/APPVERSION/$GITHUB_RUN_NUMBER/" src/index.html
-        sed -i "s/SHA/$GITHUB_RUN_NUMBER/" src/index.html
+        sed -i "s/SHA/$GITHUB_SHA/" src/index.html
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v3
@@ -55,7 +55,7 @@ jobs:
       run: wget -qO- ${{ secrets.AZURE_DEV_VM }}/index.html | grep -iq $GITHUB_RUN_NUMBER
 
     - name: Verifying sha was updated on index.html
-      run: wget -qO- ${{ secrets.AZURE_DEV_VM }}/index.html | grep -iq $SHA
+      run: wget -qO- ${{ secrets.AZURE_DEV_VM }}/index.html | grep -iq $GITHUB_SHA
   
   testing-network:
     name: Testing Connectivity to Web Server
