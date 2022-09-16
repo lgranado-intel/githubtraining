@@ -32,6 +32,7 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: webapp
+        path: src
     
     - name: Deploy Web Site
       uses: marcodallasanta/ssh-scp-deploy@v1.2.0
@@ -73,6 +74,7 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: webapp
+        path: src
     
     - name: Deploy Web Site
       uses: marcodallasanta/ssh-scp-deploy@v1.2.0
